@@ -1,0 +1,16 @@
+# Exercise 1 answer script
+# Expected output variables: cityA, cityB
+
+# ===== DO NOT EDIT: LOCAL TEST FALLBACK START =====
+if (!exists("cityA")) cityA <- 10000
+if (!exists("cityB")) cityB <- 20000
+# ===== DO NOT EDIT: LOCAL TEST FALLBACK END =====
+
+# ===== YOUR SOLUTION START =====
+for (year in 1:5) {
+  moveA <- 0.01 * cityA
+  moveB <- 0.02 * cityB
+  cityA <- cityA - moveA + moveB
+  cityB <- cityB + moveA - moveB
+}
+# ===== YOUR SOLUTION END =====

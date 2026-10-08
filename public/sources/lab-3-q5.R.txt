@@ -1,0 +1,26 @@
+# Exercise 5 answer script
+# Expected output variables:
+# scores, dept_avg, quarter_avg, best_dept, dept_factor
+
+# ===== DO NOT EDIT: LOCAL TEST FALLBACK START =====
+if (!exists("scores")) {
+  scores <- matrix(
+    c(
+      88, 92, 79, 85,
+      75, 81, 69, 74,
+      91, 95, 89, 93
+    ),
+    nrow = 3,
+    byrow = TRUE
+  )
+}
+# ===== DO NOT EDIT: LOCAL TEST FALLBACK END =====
+
+# ===== YOUR SOLUTION START =====
+rownames(scores) <- c("IT", "HR", "Sales")
+colnames(scores) <- paste0("Q", 1:4)
+dept_avg <- rowMeans(scores)
+quarter_avg <- colMeans(scores)
+best_dept <- names(which.max(dept_avg))
+dept_factor <- factor(rownames(scores))
+# ===== YOUR SOLUTION END =====

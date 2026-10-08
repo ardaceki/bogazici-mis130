@@ -1,0 +1,217 @@
+/* Home styles. */
+.start-screen {
+  max-width: 660px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 8px 0 28px;
+}
+.course-picker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+.course-picker #course-label {
+  font-size: 12px;
+  color: #667168;
+  white-space: nowrap;
+}
+.course-dropdown {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+#course-unit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  min-height: 44px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid #ccd2c9;
+  border-radius: 5px;
+  padding: 10px 12px;
+}
+#course-unit[data-pointer-focus]:focus-visible {
+  outline: none;
+}
+#course-unit:hover {
+  background: #eef0ec;
+  border-color: #a5afa3;
+}
+#course-unit[aria-expanded='true'] {
+  background: #eef0ec;
+  border-color: #a5afa3;
+}
+#course-unit svg {
+  flex-shrink: 0;
+  transition: transform 0.16s ease;
+}
+#course-unit[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+#course-options {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  max-height: 280px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  background: #f7f8f5;
+  border: 1px solid #ccd2c9;
+  border-radius: 6px;
+  padding: 5px;
+  box-shadow: 0 8px 20px #25322b12;
+}
+#course-options [role='option'] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.4;
+  transition:
+    background-color 0.16s ease,
+    color 0.16s ease,
+    border-color 0.16s ease,
+    transform 0.12s ease;
+}
+#course-options [role='option']:hover {
+  background: #e8ebe5;
+  outline: none;
+}
+#course-options [role='option']:focus {
+  background: #e8ebe5;
+  outline: none;
+}
+#course-options [aria-selected='true'] {
+  background: #edf0e9;
+}
+.course-option-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.course-option-weeks {
+  font-size: 11px;
+  color: var(--muted);
+}
+.course-option-check {
+  flex-shrink: 0;
+  visibility: hidden;
+}
+[aria-selected='true'] > .course-option-check {
+  visibility: visible;
+}
+.unit-intro {
+  padding: 32px 0 28px;
+}
+.unit-intro h1 {
+  font-size: 32px;
+  font-weight: 550;
+  letter-spacing: -0.8px;
+  line-height: 1.25;
+}
+.unit-intro p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #647067;
+  margin-top: 10px;
+}
+.unit-intro #unit-source {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.study-paths {
+  border-top: 1px solid var(--line);
+}
+.study-path {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 16px;
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.15s ease;
+}
+.study-path:hover {
+  background: #ecefe9;
+}
+.path-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.path-title {
+  font-size: 17px;
+  font-weight: 550;
+}
+.path-description {
+  font-size: 13px;
+  color: #667168;
+  line-height: 1.45;
+}
+.path-count {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.path-arrow {
+  font-size: 20px;
+  color: #536057;
+}
+.study-path .path-arrow {
+  transition: transform 0.18s ease;
+}
+.study-path:focus-visible .path-arrow {
+  transform: translateX(3px);
+}
+@media (max-width: 700px) {
+  .start-screen {
+    padding: 0 0 20px;
+  }
+  .course-picker {
+    display: block;
+    padding-bottom: 20px;
+  }
+  .course-picker #course-label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  #course-unit {
+    font-size: 14px;
+  }
+  .unit-intro {
+    padding: 26px 0 24px;
+  }
+  .unit-intro h1 {
+    font-size: 28px;
+  }
+  .study-path {
+    gap: 12px;
+    padding: 18px 16px;
+    position: relative;
+  }
+  .path-copy {
+    padding-bottom: 22px;
+  }
+  .path-count {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    font-size: 11px;
+  }
+}

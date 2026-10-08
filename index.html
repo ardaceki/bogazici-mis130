@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f8f5" />
+    <meta
+      name="description"
+      content="An independent, interactive R study companion for MIS 130. Learn, practise, and prepare for paper exams."
+    />
+    <link rel="icon" href="/favicon.svg" />
+    <title>MIS 130 — R Workshop</title>
+  </head>
+  <body>
+    <div id="app">
+      <a class="skip-link" href="#task-heading">Skip to exercise</a>
+      <header class="topbar">
+        <a class="brand" href="#">
+          <span class="brand-mark">R</span>
+          <span>
+            MIS 130
+            <span class="brand-sub">R Workshop</span>
+          </span>
+        </a>
+        <button
+          type="button"
+          class="materials-header-link"
+          id="materials-header"
+          aria-label="About the course materials"
+          title="Course materials"
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 11v6" />
+            <circle cx="12" cy="7.5" r=".8" fill="currentColor" stroke="none" />
+          </svg>
+        </button>
+        <div class="top-meta">
+          Fall 2026
+          <span class="dot">·</span>
+          <button class="text-button" id="course-info">Course map</button>
+        </div>
+      </header>
+      <div class="layout">
+        <aside class="sidebar" aria-label="Course navigation"><div id="module-nav"></div></aside>
+        <button
+          id="sidebar-toggle"
+          class="sidebar-toggle menu-toggle"
+          type="button"
+          aria-label="Open course navigation"
+          aria-expanded="false"
+          title="Course navigation"
+          hidden
+        >
+          <svg
+            class="toggle-chevron"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M6 3l5 5-5 5" />
+          </svg>
+        </button>
+        <main id="main">
+          <section id="start-screen" class="start-screen" hidden></section>
+          <div class="lesson-header">
+            <div>
+              <h1 id="module-title"></h1>
+            </div>
+          </div>
+          <div class="workspace">
+            <section class="lesson-pane" aria-labelledby="task-heading">
+              <nav class="task-footer" aria-label="Exercise navigation"></nav>
+              <div class="task-context">
+                <span id="task-position"></span>
+                <button id="task-source-link" class="text-button" type="button">Source ↗</button>
+              </div>
+              <h2 id="task-heading" tabindex="-1"></h2>
+              <div id="task-body"></div>
+              <div id="answer-area"></div>
+              <div id="feedback" aria-live="polite" role="status"></div>
+              <div id="task-support"></div>
+            </section>
+            <aside class="results-pane" aria-label="R session">
+              <div class="runtime-bar">
+                <span class="status-dot" id="status-dot"></span>
+                <span id="runtime-status">R prepares when you open a coding exercise</span>
+                <button id="retry-r" class="text-button" hidden>Retry</button>
+              </div>
+              <div class="result-tabs" role="tablist" aria-label="R session panels">
+                <button
+                  role="tab"
+                  aria-selected="true"
+                  id="output-tab"
+                  aria-controls="output-panel"
+                >
+                  Output
+                </button>
+                <button
+                  role="tab"
+                  aria-selected="false"
+                  id="objects-tab"
+                  aria-controls="objects-panel"
+                >
+                  Objects
+                  <span id="object-count">0</span>
+                </button>
+              </div>
+              <section id="output-panel" role="tabpanel" aria-labelledby="output-tab">
+                <div class="empty-state">Run your code to see its output.</div>
+              </section>
+              <section id="objects-panel" role="tabpanel" aria-labelledby="objects-tab" hidden>
+                <div class="empty-state">Named values appear here after you run code.</div>
+              </section>
+            </aside>
+            <aside id="review-panel" aria-label="Suggested answer" hidden></aside>
+          </div>
+          <footer class="site-footer">
+            <p>
+              An independent student resource, not affiliated with or endorsed by Boğaziçi
+              University. Follow your instructor’s materials and announcements for official course
+              requirements. Feedback:
+              <a href="mailto:arda@ardaceki.com">arda@ardaceki.com</a>
+            </p>
+            <div class="footer-links">
+              <a href="/privacy.html" target="_blank" rel="noopener">
+                Privacy
+                <span class="sr-only">(opens in a new tab)</span>
+              </a>
+              <a href="/THIRD_PARTY_NOTICES.txt" target="_blank" rel="noopener">
+                Software licences
+                <span class="sr-only">(opens in a new tab)</span>
+              </a>
+            </div>
+          </footer>
+        </main>
+      </div>
+      <dialog
+        id="materials-dialog"
+        aria-labelledby="materials-title"
+        aria-describedby="materials-body"
+      >
+        <div class="dialog-header">
+          <h2 id="materials-title" tabindex="-1" autofocus>About the course materials</h2>
+          <button class="icon-button dialog-close" aria-label="Close course materials notice">
+            ×
+          </button>
+        </div>
+        <div id="materials-body">
+          <p>
+            This is an independent student project for Boğaziçi University’s MIS 130 — Introduction
+            to Programming for Managerial Sciences.
+          </p>
+          <p>
+            The exercises and explanations draw on the course lectures, problem sets, and labs.
+            Credit for these materials goes to Fahrettin Çakır and the other authors named in the
+            sources. Rights to the original materials remain with their respective owners.
+          </p>
+          <p>
+            This is not an official course website. Follow your instructor’s materials and
+            announcements for course requirements.
+          </p>
+          <button type="button" class="dialog-close" id="materials-continue">
+            Continue to workshop
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </dialog>
+      <dialog id="source-dialog" aria-labelledby="source-title">
+        <div class="dialog-header">
+          <h2 id="source-title">Source material</h2>
+          <button class="icon-button dialog-close" aria-label="Close source material">×</button>
+        </div>
+        <div id="source-body"></div>
+      </dialog>
+      <dialog id="info-dialog" aria-labelledby="info-title">
+        <div class="dialog-header">
+          <h2 id="info-title"></h2>
+          <button class="icon-button dialog-close" aria-label="Close dialog">×</button>
+        </div>
+        <div id="info-body"></div>
+      </dialog>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

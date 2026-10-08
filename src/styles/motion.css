@@ -1,0 +1,113 @@
+/* Motion styles. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  #course-unit svg {
+    transition: none;
+  }
+  #course-options {
+    animation: none;
+  }
+  .study-path {
+    transition: none;
+  }
+  .primary-button:not(:disabled):active {
+    transform: none;
+  }
+  .secondary-button:not(:disabled):active {
+    transform: none;
+  }
+  .text-button:not(:disabled):active {
+    transform: none;
+  }
+  .task-footer .previous:active {
+    transform: none;
+  }
+  .task-footer .next:active {
+    transform: none;
+  }
+  .study-path:focus-visible .path-arrow {
+    transform: none;
+  }
+  *::before {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .study-path:hover .path-arrow {
+    transform: none;
+  }
+  .brand:hover .brand-mark {
+    transform: none;
+  }
+}
+@media (hover: hover) {
+  .brand-mark {
+    transition: transform 0.2s ease;
+  }
+  .study-path:hover .path-arrow {
+    transform: translateX(3px);
+  }
+  .brand:hover .brand-mark {
+    transform: rotate(-5deg);
+  }
+}
+@supports (interpolate-size: allow-keywords) {
+  details {
+    interpolate-size: allow-keywords;
+  }
+  details::details-content {
+    block-size: 0;
+    opacity: 0;
+    overflow: clip;
+    transition:
+      block-size 0.2s ease,
+      opacity 0.18s ease,
+      content-visibility 0.2s allow-discrete;
+  }
+  details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+}
+@keyframes gentle-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes dialog-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes backdrop-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes run-progress {
+  to {
+    transform: rotate(360deg);
+  }
+}

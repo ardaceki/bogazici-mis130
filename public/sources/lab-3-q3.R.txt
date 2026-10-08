@@ -1,0 +1,13 @@
+# Exercise 3 answer script
+# Expected output variable: overall
+
+# ===== DO NOT EDIT: LOCAL TEST FALLBACK START =====
+if (!exists("midterm")) midterm <- 78
+# ===== DO NOT EDIT: LOCAL TEST FALLBACK END =====
+
+# ===== YOUR SOLUTION START =====
+if (!exists("final")) final <- 91
+if (!exists("rubric")) rubric <- c(86, 92, 88, 90)
+project <- mean(rubric)
+overall <- 0.35 * midterm + 0.45 * final + 0.20 * project
+# ===== YOUR SOLUTION END =====

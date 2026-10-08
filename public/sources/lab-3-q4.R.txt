@@ -1,0 +1,18 @@
+# Exercise 4 answer script
+# Expected output variables:
+# total_units_per_product, grand_total, month_totals, best_month
+
+# ===== DO NOT EDIT: LOCAL TEST FALLBACK START =====
+if (!exists("sales")) {
+  sales <- matrix(c(120, 95, 140, 85, 110, 130), nrow = 2, byrow = TRUE)
+  rownames(sales) <- c("A", "B")
+  colnames(sales) <- paste0("M", 1:3)
+}
+# ===== DO NOT EDIT: LOCAL TEST FALLBACK END =====
+
+# ===== YOUR SOLUTION START =====
+total_units_per_product <- rowSums(sales)
+grand_total <- sum(sales)
+month_totals <- colSums(sales)
+best_month <- unname(which.max(month_totals))
+# ===== YOUR SOLUTION END =====

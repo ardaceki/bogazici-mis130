@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f8f5" />
+    <meta
+      name="description"
+      content="How MIS 130 R Workshop handles your answers, browser data, and network requests."
+    />
+    <link rel="icon" href="/favicon.svg" />
+    <title>Privacy · MIS 130 R Workshop</title>
+  </head>
+  <body>
+    <main class="privacy-page">
+      <a class="privacy-back" href="/">← Back to workshop</a>
+      <header><h1>Privacy</h1></header>
+      <section>
+        <h2>Your work</h2>
+        <p>
+          R runs in your browser. The site does not upload your code, answers, or results. Code
+          drafts stay in memory during your visit; reloading or closing the page clears them. There
+          are no accounts or saved answer histories.
+        </p>
+      </section>
+      <section>
+        <h2>External services</h2>
+        <p>
+          <a href="https://www.cloudflare.com/policies/privacy/" target="_blank" rel="noopener">
+            Cloudflare
+          </a>
+          hosts the site and processes technical information such as IP addresses, browser details,
+          and requested URLs for delivery and security.
+        </p>
+        <p>
+          Opening a coding exercise automatically downloads
+          <a href="https://webr.r-wasm.org/" target="_blank" rel="noopener">webR</a>
+          in the background, before you press Run. The site loads its typeface from
+          <a href="https://developers.google.com/fonts/faq/privacy" target="_blank" rel="noopener">
+            Google Fonts
+          </a>
+          , and some course documents load MathJax. These requests share technical information,
+          including your IP address, with those providers. Code you run can also make its own
+          network requests.
+        </p>
+        <p>
+          The workshop sets no cookies and has no analytics or advertising trackers. Cloudflare may
+          use
+          <a
+            href="https://developers.cloudflare.com/fundamentals/reference/policies-compliances/cloudflare-cookies/"
+            target="_blank"
+            rel="noopener"
+          >
+            security cookies
+          </a>
+          . Closing the page does not erase providers’ request logs.
+        </p>
+      </section>
+      <section>
+        <h2>Contact</h2>
+        <p>
+          For privacy questions, email
+          <a href="mailto:arda@ardaceki.com">arda@ardaceki.com</a>
+          . Sending an email shares your email address and message with the recipient.
+        </p>
+      </section>
+      <p class="privacy-date">Updated 7 October 2026</p>
+    </main>
+    <script type="module" src="/src/privacy.js"></script>
+  </body>
+</html>

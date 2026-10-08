@@ -1,0 +1,12 @@
+# Exercise 2 answer script
+# Expected output variables: full_boxes, leftover
+
+# ===== DO NOT EDIT: LOCAL TEST FALLBACK START =====
+if (!exists("total")) total <- 983
+if (!exists("per_box")) per_box <- 24
+# ===== DO NOT EDIT: LOCAL TEST FALLBACK END =====
+
+# ===== YOUR SOLUTION START =====
+full_boxes <- total %/% per_box
+leftover <- total %% per_box
+# ===== YOUR SOLUTION END =====
