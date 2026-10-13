@@ -1,4 +1,4 @@
-MIS 130 Workshop — software licences
+﻿MIS 130 Workshop — software licences
 
 Original application code: MIT. Course materials and course-derived educational content are excluded.
 

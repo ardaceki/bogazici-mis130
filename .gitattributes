@@ -1,2 +1,4 @@
 # Original handouts are documentation, rather than application source code.
 public/sources/** linguist-documentation
+# Preserve padding in the instructor's original rendered R output.
+public/sources/*-answers.html whitespace=-blank-at-eol

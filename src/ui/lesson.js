@@ -78,6 +78,8 @@ export function createLessonView({
     `;
     results.reset();
     if (task.kind === 'code') {
+      // Review notes may contain answers. Keep them in the explicit solution
+      // and post-check feedback; initial guidance comes from answerContract.
       query('.results-pane').hidden = true;
       query('#answer-area').innerHTML = /* HTML */ `
         <div class="editor-shell">
@@ -92,13 +94,6 @@ export function createLessonView({
         <p class="manual-note" id="editor-shortcuts">
           Ctrl / ⌘ + Enter runs code. Tab indents; press Escape, then Tab to leave the editor.
         </p>
-        ${
-          task.manual
-            ? /* HTML */ `
-                <p class="manual-note">${renderInline(task.manual)}</p>
-              `
-            : ''
-        }
       `;
       editor = createCodeEditor({
         parent: query('#editor'),
@@ -271,7 +266,10 @@ export function createLessonView({
           solutionOpen
             ? /* HTML */ `
                 <section id="solution" class="solution${newSolution ? ' is-new' : ''}">
-                  <h3>${current.kind === 'written' ? 'Suggested answer' : 'One solution'}</h3>
+                  <h3>
+                    ${current.kind === 'written' ? 'Suggested answer' : current.solutionLabel || 'One solution'}
+                  </h3>
+                  ${current.solutionNote ? renderParagraphs(current.solutionNote) : ''}
                   ${
                     current.kind === 'code' || current.kind === 'written'
                       ? /* HTML */ `
@@ -280,7 +278,9 @@ export function createLessonView({
                       : /* HTML */ `
                           <p>${escapeHtml(solution)}</p>
                         `
-                  }${current.kind !== 'written' ? renderParagraphs(current.explanation) : ''}${current.kind === 'code' ? '<button class="secondary-button" id="load-solution">Use in editor</button>' : ''}
+                  }${current.kind !== 'written' ? renderParagraphs(current.explanation) : ''}
+                  ${current.manual ? renderParagraphs(current.manual) : ''}
+                  ${current.kind === 'code' ? '<button class="secondary-button" id="load-solution">Use in editor</button>' : ''}
                 </section>
               `
             : ''

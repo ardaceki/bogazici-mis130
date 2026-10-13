@@ -11,6 +11,12 @@ Original copies are under `public/sources/`; adapted questions, explanations,
 and solutions also draw on those materials. Each published task links to its
 source section or PDF page.
 
+The workshop includes the provided instructor HTML answers for
+PS 2, Lab 2, PS 3 and Lab 3. Their original bytes are preserved, and each
+practice task links to its answer section as well as the question. Lecture 3
+is not included. These answer documents retain the same
+author attribution and course-material exclusions described below.
+
 Rights to the original teaching materials remain with their respective authors.
 These materials, including course-derived exercise text, examples, hints, and
 solutions, are excluded from the application software licence.
@@ -39,7 +45,7 @@ notice lists additional bundled components and their source/licence locations.
 Dependency notices are not replaced by the project MIT licence.
 
 The static build includes [software licence notices](../public/THIRD_PARTY_NOTICES.txt),
-also linked from the website footer. `npm run build` regenerates them from the
+available in the repository; the website footer links to the GitHub repository. `npm run build` regenerates them from the
 installed browser dependencies and the application `LICENSE`. The webR notice is
 preserved in full, along with the notice for msgpack embedded in its browser entry.
 When upgrading webR, review its bundled dependencies in `scripts/build-notices.mjs`.

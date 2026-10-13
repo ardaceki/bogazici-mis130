@@ -55,5 +55,5 @@ const notice = [
   'Third-party notices for the browser application. webR runtime binaries are loaded from the upstream CDN; its complete upstream notice is retained below.',
   ...sections.map(([name, licence]) => `${name}\n${'='.repeat(name.length)}\n\n${licence}`),
 ].join('\n\n');
-await writeFile(join(root, 'public/THIRD_PARTY_NOTICES.txt'), `${notice}\n`);
+await writeFile(join(root, 'public/THIRD_PARTY_NOTICES.txt'), `\uFEFF${notice}\n`);
 console.log(`Preserved application licence and ${packages.size} dependency notices.`);

@@ -122,7 +122,7 @@ test('choices, written self-review, free navigation, source links, and mobile la
   await page.screenshot({ path: 'tests/artifacts/mobile-matrix.png', fullPage: true });
   await page.goto('/#lab3-population');
   await page.getByRole('button', { name: 'Show solution', exact: true }).click();
-  await expect(page.locator('#solution')).toContainText('moveA');
+  await expect(page.locator('#solution')).toContainText('cityA_next');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );

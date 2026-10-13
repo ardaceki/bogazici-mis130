@@ -98,8 +98,8 @@ export function createExecutionController({ getTask, getCode, feedback, onStart,
       else if (shouldCheck) {
         const failed = result.checks.filter((c) => !c.passed);
         const correctNames = result.checks
-          .filter((c) => c.passed && c.target && !c.target.startsWith('.'))
-          .map((c) => c.target);
+          .filter((c) => c.passed && (c.label || (c.target && !c.target.startsWith('.'))))
+          .map((c) => c.label || c.target);
         const reassurance =
           failed.length && correctNames.length
             ? `${correctNames.slice(0, 2).join(' and ')} ${correctNames.length === 1 ? 'is' : 'are'} correct. `
@@ -108,9 +108,11 @@ export function createExecutionController({ getTask, getCode, feedback, onStart,
           failed.length ? 'error' : 'success',
           failed.length
             ? 'One thing to fix:'
-            : task.manual
-              ? 'Saved values are correct.'
-              : 'Correct.',
+            : task.successTitle
+              ? task.successTitle
+              : task.manual
+                ? 'Saved values are correct.'
+                : 'Correct.',
           failed.length
             ? reassurance + (failed[0].feedback || failed[0].message)
             : task.explanation + (task.manual ? ' ' + task.manual : ''),

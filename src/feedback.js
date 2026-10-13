@@ -22,6 +22,15 @@ export function answerContract(task) {
         'Select an option, then click Check answer. You do not need to type code for this question.',
     };
   const targets = targetsFor(task);
+  if (task.captureAnswers)
+    return {
+      summary: 'Follow the answer format in this question.',
+      detail:
+        'The instructor solution is a reference, not an exact-code template. Equivalent calculations, = or <-, and extra helpers are allowed. Display answers in question order or return an ordered vector/list; its labels may differ. Complete lists using the documented result names can also be reordered. Print and cat can be used inside loops and local expressions. Numeric and logical answers remain different types; printing numeric-looking text does not make it numeric. Run checks the whole script from a fresh start. Required workspace transitions, saved-file execution and displays are checked where requested; explanations are self-reviewed.' +
+        (task.observe?.length
+          ? ' Write state-changing steps in the editor, including loops or helper function bodies. Intermediate changes inside a separately sourced file or code generated from strings/quoted expressions are not individually observed.'
+          : ''),
+    };
   return {
     summary: targets.length ? `Save as: ${targets.join(', ')}` : 'Write a calculation.',
     detail: targets.length
@@ -34,6 +43,21 @@ const present = (node) => {
   return n == null ? 'missing' : String(n);
 };
 export function explainCheck(check, diagnostics, objects = []) {
+  if (check.kind === 'requirement') return check.message;
+  if (check.kind === 'course-answer') {
+    if (!diagnostics || !scalar(diagnostics.exists) || check.predicate) return check.message;
+    return explainCheck(
+      {
+        ...check,
+        kind: 'value',
+        target: check.label,
+        customMessage: true,
+        message: check.formatHint,
+      },
+      diagnostics,
+      objects,
+    );
+  }
   const d = diagnostics;
   if (!d) return `${check.message} Then click Run again.`;
   const target = check.displayTarget || check.target || check.targets?.[0];

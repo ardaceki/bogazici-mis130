@@ -32,8 +32,8 @@ test('answer checks reject wrong types, nearby integer answers, broken saved scr
       {
         id: 'lab2-seconds',
         code: '163220520L',
-        accepted: false,
-        calculationMatches: true,
+        // The original lab asks for a calculation, not a required object name.
+        accepted: true,
       },
       {
         id: 'vectors',

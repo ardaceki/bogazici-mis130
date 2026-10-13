@@ -156,3 +156,16 @@ link('paper-factor', [foundations.factors]);
 link('paper-class', [foundations.classes], taskSources.unclass.note);
 link('paper-simultaneous', [lab3(1)]);
 link('paper-summary', [lab3(5), ps3.matrix]);
+
+// The question and its instructor answer remain separately traceable.
+for (const [id, source] of Object.entries(taskSources)) {
+  if (!/^(ps2-|ps3-|lab2-|lab3-)/.test(id)) continue;
+  const question = source.references.find((ref) =>
+    /^\/sources\/(ps|lab)-[23]\.html#/.test(ref.href),
+  );
+  if (!question) throw new Error(`Missing course question for ${id}`);
+  const href = question.href.replace(/(ps|lab)-([23])\.html/, '$1$2-answers.html');
+  source.references.unshift({ label: `Instructor answers · ${question.label}`, href });
+  source.note =
+    'Question and feedback aligned with the provided instructor answers. Equivalent calculations are accepted; written reasoning is self-reviewed. Browser adaptations are explained in the exercise.';
+}

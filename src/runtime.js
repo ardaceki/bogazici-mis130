@@ -1,5 +1,6 @@
 import { WebR, ChannelType } from 'webr';
 import { explainCheck } from './feedback.js';
+import { observerCode } from './application/answer-observer.js';
 
 export function fromR(node) {
   if (!node || typeof node !== 'object' || !('type' in node)) return node;
@@ -162,10 +163,23 @@ export class RRuntime {
     const env = this.env;
     const shelter = this.runShelter;
     let response;
+    let observer = null;
     try {
-      response = await shelter.captureR(code, {
-        env,
-        withAutoprint: true,
+      // Course questions may ask for several displayed answers or intermediate
+      // workspace states. Keep typed evidence outside the student's workspace;
+      // never infer numeric answers from formatted console text.
+      if (task.captureAnswers) {
+        observer = await this.inspectorEnvironment(shelter, env);
+        await observer.bind('.code', code);
+        await shelter.evalR(
+          '.capture <- new.env(parent=emptyenv()); .capture$outputs <- list(); .capture$states <- list(); .capture$sources <- list()',
+          { env: observer },
+        );
+      }
+      const observedCode = observer ? observerCode(task) : code;
+      response = await shelter.captureR(observer ? observedCode : code, {
+        env: observer || env,
+        withAutoprint: !observer,
         throwJsException: false,
         captureGraphics: { width: 640, height: 420 },
       });
@@ -191,6 +205,23 @@ export class RRuntime {
         { env: await this.inspectorEnvironment(shelter, env) },
       );
       await checker.bind('.lesson', env);
+      if (observer) {
+        // Overwrite any same-named student objects with the actual run evidence.
+        await checker.bind(
+          '.workshop_outputs',
+          await shelter.evalR('.capture$outputs', { env: observer }),
+        );
+        await checker.bind(
+          '.workshop_states',
+          await shelter.evalR('.capture$states', { env: observer }),
+        );
+      }
+      if (observer) {
+        await checker.bind(
+          '.workshop_sources',
+          await shelter.evalR('.capture$sources', { env: observer }),
+        );
+      }
       let checks = [];
       if (shouldCheck && !error) {
         for (const validation of task.checks || []) {
@@ -201,13 +232,13 @@ export class RRuntime {
           const passed = (await result.toArray())[0] === true;
           let diagnostic = null;
           const target = validation.target || validation.targets?.[0];
-          if (!passed && target) {
+          if (!passed && (target || validation.actualExpr)) {
             const wanted = validation.expected || 'NULL';
             const diag = await shelter.evalR(
               `local({
             lesson <- .lesson
-            rootExists <- exists(${JSON.stringify(target)},envir=lesson,inherits=FALSE)
-            root <- if(rootExists) get(${JSON.stringify(target)},envir=lesson,inherits=FALSE) else NULL
+            root <- ${validation.actualExpr || `if(exists(${JSON.stringify(target)},envir=lesson,inherits=FALSE)) get(${JSON.stringify(target)},envir=lesson,inherits=FALSE) else NULL`}
+            rootExists <- ${validation.actualExpr ? '!is.null(root)' : `exists(${JSON.stringify(target)},envir=lesson,inherits=FALSE)`}
             found <- rootExists ${validation.path ? `&& ${JSON.stringify(validation.path)} %in% names(root)` : ''}
             wanted <- ${wanted}
             actual <- if(found) ${validation.path ? `root[[${JSON.stringify(validation.path)}]]` : 'root'} else NULL
@@ -266,7 +297,14 @@ export class RRuntime {
       throw error;
     } finally {
       // A stopped worker already releases its R objects. Never purge a newer session.
-      if (generation === this.generation) await shelter.purge();
+      if (generation === this.generation) {
+        if (observer)
+          await shelter.evalR(
+            'if(exists("restore",envir=.capture,inherits=FALSE)) .capture$restore()',
+            { env: observer },
+          );
+        await shelter.purge();
+      }
     }
   }
   async inspectorEnvironment(shelter, lesson) {

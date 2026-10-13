@@ -86,6 +86,11 @@ Reduced-motion behavior lives in `styles/motion.css` and `src/motion.js`.
 4. Use `code`, `choice`, or `written` from `helpers.js`. Code checks should
    compare required results and structure, not literal source strings. State
    required object names and distinguish automatic checking from self-review.
+   Keep computed answers, error diagnoses, and solution explanations out of the
+   initial practice prompt and editor notes. Put them in opt-in hints, solutions,
+   or post-check feedback. The `manual` review text belongs in the solution and
+   successful-check feedback; it must not be rendered below the initial editor.
+   Run `tests/answer-disclosure.spec.js` when changing these surfaces.
 5. Put optional staged learning steps in `guided.js`; each stage has its own
    starter, solution, and checks. Put task files in the task's `files` mapping;
    they run in a disposable browser filesystem.
@@ -171,3 +176,19 @@ cause a mismatch; do not interpret it as proof of malicious changes. Verify the
 exact release commit and toolchain before investigating the differing files.
 External webR binaries, fonts, linked third-party resources, response headers,
 and responses to other visitors or at a later time are outside this comparison.
+
+## Instructor-answer maintenance
+
+`src/content/course-practice.js` is the single source for complete PS/lab task
+definitions, including metadata, prompts, answer contracts and checks. The topic
+modules import its practice arrays; they do not duplicate those definitions.
+Update this file when an instructor answer changes. `instructor-solutions.js`
+holds transcribed runnable answer chunks. Keep the original HTML in `public/sources/` unchanged and update
+`src/content/sources.js` if section anchors change.
+
+`course-checks.js` handles typed output bundles, required displays, saved-file execution and ordered workspace states. `src/application/answer-observer.js` observes real output calls, successful source execution and nested statement checkpoints while native R evaluates the program. It restores its helper hooks after each run.
+The runtime observer is used only for coding practice tasks; Learn/guided and
+paper exercises retain their existing execution path. Acceptance formats and
+observation limits are documented in `ANSWER_AUDIT.md`. Before any publication,
+run all browser tests (including `instructor-answers.spec.js`), the production
+build checks, local production smoke, and reproducibility checks.

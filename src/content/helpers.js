@@ -1,7 +1,7 @@
 // Compare values, retaining their semantic type and shape but allowing names and
 // integer/double storage to differ. Discrete answers must match exactly; fractional
 // calculations use an explicit relative tolerance for floating-point arithmetic.
-const sameValue = (actual, expected) => `local({
+export const sameValue = (actual, expected) => `local({
   .actual <- ${actual}
   .expected <- ${expected}
   .numeric <- is.numeric(.expected)

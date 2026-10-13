@@ -66,20 +66,28 @@ export function createResultsView({ getLessonState }) {
     const items = result.output.filter((item) =>
       ['stdout', 'stderr', 'message', 'warning', 'error'].includes(item.type),
     );
-    query('#output-panel').innerHTML = items.length
-      ? /* HTML */ `
-          <pre class="output">
-${items
-              .map(
-                (item) => /* HTML */ `
-                  <span class="output-${escapeHtml(item.type)}">
-                    ${escapeHtml(item.type === 'warning' ? 'Warning: ' + item.text : item.type === 'error' ? 'Error: ' + item.text : item.text)}
-                  </span>
-                `,
-              )
-              .join('\n')}</pre>
-        `
-      : '<div class="empty-state">Code ran without printed output.<br>Use an object name or print() to display a value.</div>';
+    if (items.length) {
+      // Template indentation inside <pre> becomes visible whitespace. Keep R's
+      // own alignment, with one line per captured console entry.
+      const output = document.createElement('pre');
+      output.className = 'output';
+      for (const [index, item] of items.entries()) {
+        if (index) output.append('\n');
+        const line = document.createElement('span');
+        line.className = `output-${item.type}`;
+        line.textContent =
+          item.type === 'warning'
+            ? 'Warning: ' + item.text
+            : item.type === 'error'
+              ? 'Error: ' + item.text
+              : item.text;
+        output.append(line);
+      }
+      query('#output-panel').replaceChildren(output);
+    } else {
+      query('#output-panel').innerHTML =
+        '<div class="empty-state">Code ran without printed output.<br>Use an object name or print() to display a value.</div>';
+    }
     for (const bitmap of result.images || []) {
       const canvas = document.createElement('canvas');
       canvas.width = bitmap.width;
