@@ -272,9 +272,10 @@ main {
     font-size: 10px;
   }
   .top-meta {
+    flex-direction: column;
+    align-items: flex-end;
     gap: 0;
     font-size: 10px;
-    display: none;
   }
   .layout {
     min-height: calc(100vh - 64px);
@@ -296,9 +297,6 @@ main {
     gap: 24px;
   }
   .top-meta > .dot {
-    display: none;
-  }
-  .top-meta > button {
     display: none;
   }
   .sidebar.open {

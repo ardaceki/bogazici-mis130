@@ -8,7 +8,7 @@ Release notes identify the commit and deployment verification for each release.
 | Check                        | Result                                                                                                                               |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | `npm run check`              | Formatting, lint, deployment-verifier regressions, source links and production build passed                                          |
-| `npm test`                   | All 54 Chrome browser tests passed                                                                                                   |
+| `npm test`                   | All 55 Chrome browser tests passed                                                                                                   |
 | Main R solutions             | All 90 coding tasks and 24 guided stages passed, including empty-answer rejection                                                    |
 | Instructor answers           | All 33 coding answers read directly from six instructor HTML documents passed; all 35 practice questions link to instructor sections |
 | Alternative answers          | 33 independent approaches, all-task syntax/helper variants and existing audit regressions passed                                     |
@@ -46,7 +46,9 @@ questions.
 Runtime checks cover fresh workspaces, function shadowing, options restoration,
 expected errors, cancellation/recovery and failed-load retries. UI checks cover
 partial feedback, temporary drafts, guided stages, source links, keyboard focus,
-navigation, reduced motion and responsive layouts. All 116 initial question
+navigation, reduced motion and responsive layouts. Header coverage verifies that
+the term and Course map remain visible and usable without overlap or horizontal
+overflow on home and lesson screens at 320, 390, 600, 700, 701 and 1440px. All 116 initial question
 views and existing guided stages are checked for premature answers. Every wrong
 choice has a specific explanation. Solution visibility and feedback reset are
 tested across editing and navigation.

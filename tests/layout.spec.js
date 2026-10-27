@@ -1,5 +1,37 @@
 import { test, expect } from './fixtures.js';
 
+test('term and course map remain accessible in narrow headers on home and lessons', async ({
+  page,
+}) => {
+  for (const width of [320, 390, 600, 700, 701, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ['/#', '/#vector-combine']) {
+      await page.goto(route);
+      const meta = page.locator('.top-meta');
+      const map = page.getByRole('button', { name: 'Course map', exact: true });
+      await expect(meta).toBeInViewport();
+      await expect(meta).toContainText('Fall 2026');
+      await expect(map).toBeInViewport();
+      const brand = await page.locator('.brand').boundingBox();
+      const metadata = await meta.boundingBox();
+      const materials = await page.locator('#materials-header').boundingBox();
+      expect(brand.x + brand.width).toBeLessThanOrEqual(metadata.x);
+      expect(metadata.x + metadata.width).toBeLessThanOrEqual(materials.x);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      );
+      await map.click();
+      await expect(page.getByRole('dialog', { name: 'Course map' })).toBeVisible();
+      await page.locator('#info-dialog .dialog-close').click();
+    }
+  }
+  await page.setViewportSize({ width: 320, height: 850 });
+  await page.screenshot({
+    path: 'tests/artifacts/narrow-header-course-map.png',
+    animations: 'disabled',
+  });
+});
+
 test('exercise navigation stays visible before and after scrolling', async ({ page }) => {
   for (const viewport of [
     { width: 1440, height: 900 },
