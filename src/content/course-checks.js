@@ -26,7 +26,8 @@ export function answers(fields) {
       .actual <- if(length(.found)) get(.found[1], envir=.lesson, inherits=FALSE)
         else if(.named_bundle && length(.key)) .last[[.key[1]]]
         else if(is.list(.last) && length(.last)==${fields.length}) .last[[${slot + 1}]]
-        else if(is.atomic(.last) && is.null(dim(.last)) && length(.last)==${fields.length} && ${fields.length}>1) .last[${slot + 1}]
+        else if(is.atomic(.last) && is.null(dim(.last)) && length(.last)==${fields.length} && ${fields.length}>1 &&
+          all(vapply(list(${fields.map((field) => field.expected).join(',')}), function(x) is.atomic(x) && is.null(dim(x)) && length(x)==1L, logical(1)))) .last[${slot + 1}]
         else if(length(.outputs)>=${fields.length}) .outputs[[length(.outputs)-${fields.length}+${slot + 1}]]
         ${lastResult ? 'else if(length(.outputs)) .last' : ''}
         else NULL
@@ -51,7 +52,7 @@ export function answers(fields) {
 export const displayed = (expected, message) => ({
   kind: 'requirement',
   expr: `any(vapply(.workshop_outputs, function(.output) ${sameValue('.output', expected)}, logical(1)))`,
-  message,
+  message: message.includes('Run') ? message : `${message} Then click Run.`,
 });
 export const sourceExecuted = (filename) => ({
   kind: 'requirement',

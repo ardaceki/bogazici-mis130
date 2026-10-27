@@ -1,12 +1,12 @@
 // Compare values, retaining their semantic type and shape but allowing names and
 // integer/double storage to differ. Discrete answers must match exactly; fractional
 // calculations use an explicit relative tolerance for floating-point arithmetic.
-export const sameValue = (actual, expected) => `local({
+export const sameValue = (actual, expected, tolerance = null) => `local({
   .actual <- ${actual}
   .expected <- ${expected}
   .numeric <- is.numeric(.expected)
   .same_type <- if (.numeric) is.numeric(.actual) else identical(typeof(.actual), typeof(.expected))
-  .tolerance <- if (.numeric && any(is.finite(.expected) & .expected != trunc(.expected))) 1e-8 else 0
+  .tolerance <- ${tolerance ?? 'if (.numeric && any(is.finite(.expected) & .expected != trunc(.expected))) 1e-8 else 0'}
   .same_type && identical(dim(.actual), dim(.expected)) &&
     isTRUE(all.equal(unname(.actual), unname(.expected), check.attributes=FALSE, tolerance=.tolerance))
 })`;
@@ -34,15 +34,15 @@ export const check = (expr, message) => {
       : {}),
   };
 };
-export const value = (name, expected, message) => ({
+export const value = (name, expected, message, tolerance = null) => ({
   ...check(
-    `exists("${name}", inherits=FALSE) && ${sameValue(name, expected)}`,
+    `exists("${name}", inherits=FALSE) && ${sameValue(name, expected, tolerance)}`,
     message || `Check the value stored in ${name}.`,
   ),
   kind: 'value',
   target: name,
   expected,
-  resultExpr: sameValue('.workshop_result', expected),
+  resultExpr: sameValue('.workshop_result', expected, tolerance),
   customMessage: !!message,
 });
 export function code(id, title, prompt, starter, solution, explanation, checks, extra = {}) {

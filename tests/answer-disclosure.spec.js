@@ -7,7 +7,7 @@ test('every question and guided stage starts without review notes, revealed hint
   const tasks = await page.evaluate(() =>
     window.workshop.tasks.map(({ id, kind, manual }) => ({ id, kind, manual })),
   );
-  expect(tasks).toHaveLength(73);
+  expect(tasks).toHaveLength(116);
   for (const task of tasks) {
     await page.evaluate((id) => window.workshop.navigate(id), task.id);
     let hasNextStage;
@@ -50,6 +50,10 @@ test('practice questions do not disclose computed answers, diagnoses or solution
     ['ps3-length', ['extension adds NA', 'truncation removes']],
     ['lab3-population', ['11412.66', '18587.34', 'cityA_next', 'both flows must use']],
     ['lab3-grade', ['86.05', 'mean()']],
+    ['ps5-indexing', ['which.max(delay) is 3', '8,3,5,12,1,7,4']],
+    ['ps5-subsets', ['35,33,30,38', 'nonexistent row']],
+    ['ps5-repair', ['52,56,51,50,54', 'overwrites all four cells']],
+    ['lab5-balloons', ['135 cm', '45 and 27']],
   ];
   for (const [id, spoilers] of cases) {
     await page.evaluate((id) => window.workshop.navigate(id), id);

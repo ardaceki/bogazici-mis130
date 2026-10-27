@@ -41,22 +41,31 @@ cells. The editor uses CodeMirror; R runs through webR 0.6.0.
 
 ### Current coverage
 
-**73 tasks · 2 topic groups · 3 ways to practise**
+**116 tasks · 3 topic groups · 3 ways to practise**
 
-| Topic              | Focus                                           |
-| ------------------ | ----------------------------------------------- |
-| First steps in R   | Calculations, objects, and reproducible scripts |
-| Syntax and objects | Vectors, lists, matrices, and data frames       |
+| Topic                | Focus                                                                  |
+| -------------------- | ---------------------------------------------------------------------- |
+| First steps in R     | Calculations, objects, and reproducible scripts                        |
+| Syntax and objects   | Vectors, lists, matrices, and data frames                              |
+| Vectors and matrices | Sequences, repetition, indexing, logical selection, and matrix updates |
 
-The 21 PS/lab questions follow the supplied PS 2, Lab 2, PS 3, and Lab 3
+The 35 PS/lab questions follow the supplied PS 2, Lab 2, PS 3, Lab 3, PS 5, and Lab 5
 instructor answers. Checks accept equivalent calculations and the answer formats
 described in each question; required values, types, structure, and selected
 intermediate states still matter. Written explanations are self-reviewed.
 Review answers appear when you open the solution or after a successful code
 check. See the [answer contracts and limits](docs/ANSWER_AUDIT.md).
 
+The **Weeks 3–5 · Vectors & matrices** group pairs Lectures 3–4 with PS 5
+and Lab 5. Its 21 Learn tasks lead into 14 practice questions (including two
+optional challenges) and eight paper-practice questions. Week 4 had Quiz 1
+instead of a separate PS/lab session; PS 5 and Lab 5 explicitly consolidate
+the vector and matrix lectures. Each lab question supplies its own inputs,
+so questions can be opened in any order.
+
 Later topics appear in the course map; their exercises are not yet published.
-Lecture 3 will be added after its PS/lab materials and answers are available.
+Lecture 5 covers lists and data frames and remains a later topic. PS 5 and
+Lab 5 are not its practice materials.
 
 <details>
 <summary><strong>Explore the home screen and mobile view</strong></summary>

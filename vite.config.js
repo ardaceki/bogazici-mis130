@@ -24,5 +24,17 @@ export default defineConfig(({ mode }) => ({
       'Cross-Origin-Embedder-Policy': 'require-corp',
     },
   },
-  build: { target: 'es2022', rollupOptions: { input: ['index.html', 'privacy.html'] } },
+  build: {
+    target: 'es2022',
+    rollupOptions: {
+      input: ['index.html', 'privacy.html'],
+      output: {
+        // Keep the editor cacheable independently as the course content grows.
+        manualChunks(id) {
+          if (/\/node_modules\/(?:@codemirror|@lezer|style-mod|w3c-keyname|crelt)\//.test(id))
+            return 'editor';
+        },
+      },
+    },
+  },
 }));

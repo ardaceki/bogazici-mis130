@@ -16,6 +16,17 @@ const field = (label, expected, names = [], resultNames = names) => ({
   resultNames,
 });
 const namedAnswer = (label, expected, ...names) => field(label, expected, names);
+// Every Lab 5 exercise is independently runnable: Run always starts fresh.
+const branches =
+  'branch_a <- c(42,35,51,28)\nbranch_b <- c(45,31,58,33)\nbranch_c <- c(40,39,55,30)';
+const salesInput = branches + '\nsales <- rbind(branch_a, branch_b, branch_c)';
+const trafficInput =
+  'traffic <- matrix(c(18,24,30,21,27,33,20,26,35,22,29,38), nrow=3, byrow=TRUE)\nrownames(traffic) <- c("R1","R2","R3")\ncolnames(traffic) <- c("08","10","12","14")';
+const countsInput =
+  'counts <- matrix(c(42,51,48,55,39,410,44,50,36,45,47,49), nrow=3, byrow=TRUE)\nrownames(counts) <- c("A","B","C")\ncolnames(counts) <- c("P1","P2","P3","P4")';
+const salesExpected = 'matrix(c(42,35,51,28,45,31,58,33,40,39,55,30),3,byrow=TRUE)';
+const selfReview =
+  'Code checks cover the requested values and structures. Self-review your predictions and written explanations; the site cannot verify that you predicted before running. When a particular function or indexing method is requested, compare your method with the source as well.';
 const definitions = {
   'ps2-panes': {
     title: 'PS 2 · Where does the work happen?',
@@ -441,6 +452,331 @@ const definitions = {
   },
 };
 
+// PS 5 and Lab 5 consolidate Lectures 3–4, rather than Lecture 5.
+Object.assign(definitions, {
+  'ps5-construction': {
+    title: 'PS 5 · Trace vector construction',
+    kind: 'code',
+    source: 'PS 5 · Q1',
+    prompt:
+      'Before running, predict the exact contents and lengths of route_id, zone_times and zone_each. Explain which zone vector gives four northern stops followed by four southern stops, and how each differs from times. Diagnose seq(from=12, to=3, by=3), then create the corrected sequence as descending. Create stop_order as odd positions 1–7 followed by even positions 2–8 using two sequences and c(), without typing all eight numbers. Display the three lengths; write explanations as comments.',
+    starter:
+      'route_id <- seq(from=210, to=245, by=5)\nzone_times <- rep(c("N","S"), times=4)\nzone_each <- rep(c("N","S"), each=4)\n# Predict, inspect, and complete the two new vectors.',
+    checks: [
+      value('route_id', 'seq(210,245,5)'),
+      value('zone_times', 'rep(c("N","S"),4)'),
+      value('zone_each', 'rep(c("N","S"),each=4)'),
+      value('descending', 'c(12,9,6,3)'),
+      value('stop_order', 'c(1,3,5,7,2,4,6,8)'),
+      displayed('8', 'Display the length of each of the three vectors.'),
+    ],
+    explanation:
+      'All three vectors have length 8. zone_each gives N,N,N,N,S,S,S,S; zone_times alternates N,S four times. A descending sequence needs a negative step. stop_order is 1,3,5,7,2,4,6,8.',
+    manual: selfReview,
+    hints: [
+      'Track whether a repetition applies to each element or to the complete pattern.',
+      'Compare the direction from the start to the endpoint with the sign of by.',
+    ],
+  },
+  'ps5-indexing': {
+    title: 'PS 5 · Trace, filter, diagnose',
+    kind: 'code',
+    source: 'PS 5 · Q2',
+    prompt:
+      'Predict delay[c(1,4,8)], delay[delay >= 7], delay[-c(2,6)] and delay[c(8,3,3,1)]. Then compute them. Remove only the first maximum without typing its position; filter values at least 4 and below 10; keep every position except the second. Display all seven answers in that order, return a seven-entry list, or save them as selected, large, excluded, repeated, without_first_max, middle_values, keep_without_second. Explain what remains after removing the first maximum, why delay[c(-2,4)] is invalid, and give a valid positive or negative index expression.',
+    starter: 'delay <- c(8,3,12,5,12,1,7,4)\n# Predict first, then calculate the seven answers.',
+    checks: answers([
+      namedAnswer('Selected positions', 'c(8,5,4)', 'selected'),
+      namedAnswer('Values at least 7', 'c(8,12,12,7)', 'large'),
+      namedAnswer('Excluded positions', 'c(8,12,5,12,7,4)', 'excluded'),
+      namedAnswer('Repeated positions', 'c(4,12,12,8)', 'repeated'),
+      namedAnswer('Without the first maximum', 'c(8,3,5,12,1,7,4)', 'without_first_max'),
+      namedAnswer('Middle values', 'c(8,5,7,4)', 'middle_values'),
+      namedAnswer('Without position 2', 'c(8,12,5,12,1,7,4)', 'keep_without_second'),
+    ]),
+    explanation:
+      'Index order controls output order, including repeated positions. which.max(delay) is 3: removing that position retains the other 12 at original position 5. Positive indexes select and negative indexes exclude; they cannot be mixed, except for zero. delay[-2] and delay[c(1,3:8)] keep the requested positions.',
+    manual: selfReview,
+    hints: [
+      'Write down positions separately from values. Repeated positions can repeat a value.',
+      'which.max() identifies the first maximum; use that position in an exclusion.',
+    ],
+  },
+  'ps5-filling': {
+    title: 'PS 5 · Reason about matrix filling',
+    kind: 'code',
+    source: 'PS 5 · Q3',
+    prompt:
+      'Predict both matrices in full, identify which has 11:14 as its first row, and explain why. Inspect dim(by_column), nrow(by_row) and ncol(by_row). Locate 18 in each matrix and construct by_row directly with rbind(). Display these eight results in order: the two matrices, dimensions, row count, column count, the two row/column positions, and the rbind matrix. Return positions as one-row matrices, or save two-number position vectors as column_position and row_position. Other saved answer names: by_column, by_row, dimensions, rows, columns, by_row_with_rbind.',
+    starter:
+      'values <- 11:22\nby_column <- matrix(values,nrow=3,ncol=4)\nby_row <- matrix(values,nrow=3,ncol=4,byrow=TRUE)\n# Predict before displaying the results.',
+    checks: answers([
+      namedAnswer('Column-filled matrix', 'matrix(11:22,3)', 'by_column'),
+      namedAnswer('Row-filled matrix', 'matrix(11:22,3,byrow=TRUE)', 'by_row'),
+      namedAnswer('Dimensions', 'c(3,4)', 'dimensions'),
+      namedAnswer('Row count', '3', 'rows'),
+      namedAnswer('Column count', '4', 'columns'),
+      {
+        ...namedAnswer('18 in column-filled matrix', 'matrix(c(2,3),1)', 'column_position'),
+        predicate:
+          'is.numeric(.answer) && length(.answer)==2 && isTRUE(all.equal(as.vector(.answer),c(2,3),check.attributes=FALSE))',
+      },
+      {
+        ...namedAnswer('18 in row-filled matrix', 'matrix(c(2,4),1)', 'row_position'),
+        predicate:
+          'is.numeric(.answer) && length(.answer)==2 && isTRUE(all.equal(as.vector(.answer),c(2,4),check.attributes=FALSE))',
+      },
+      namedAnswer('Row binding', 'matrix(11:22,3,byrow=TRUE)', 'by_row_with_rbind'),
+    ]),
+    explanation:
+      'R fills columns first unless byrow=TRUE. Both matrices are 3×4. The value 18 is at [2,3] in by_column and [2,4] in by_row. rbind(11:14,15:18,19:22) recreates by_row.',
+    manual: selfReview,
+    hints: [
+      'Follow one complete column before moving to the next in the default matrix.',
+      'which(matrix_name == 18, arr.ind=TRUE) reports row and column coordinates.',
+    ],
+  },
+  'ps5-subsets': {
+    title: 'PS 5 · Predict matrix subsets',
+    kind: 'code',
+    source: 'PS 5 · Q4',
+    prompt:
+      'Predict traffic[2,3], traffic[,2], traffic[1:2,c(1,4)] and traffic[c(3,1),c(4,2)], including whether each is a scalar, vector or matrix. Predict traffic[traffic >= 30] and explain its order. Diagnose traffic[4,2] when the intended cell is row 2, column 4. Select rows 1 and 3 while excluding column 2. Display all seven answers in order, return a seven-entry list, or save cell, second_column, block, reordered, at_least_30, correct_cell, selected_matrix. Explain your predictions in comments.',
+    starter: trafficInput + '\n# Predict and compute the seven results.',
+    checks: answers([
+      namedAnswer('Cell', '20', 'cell'),
+      namedAnswer('Second column', 'c(24,33,22)', 'second_column'),
+      namedAnswer('Selected block', 'matrix(c(18,21,27,26),2,byrow=TRUE)', 'block'),
+      namedAnswer('Reordered block', 'matrix(c(38,22,21,24),2,byrow=TRUE)', 'reordered'),
+      namedAnswer('Values at least 30', 'c(35,33,30,38)', 'at_least_30'),
+      namedAnswer('Correct cell', '26', 'correct_cell'),
+      namedAnswer(
+        'Selected matrix',
+        'matrix(c(18,30,21,35,29,38),2,byrow=TRUE)',
+        'selected_matrix',
+      ),
+    ]),
+    explanation:
+      'The first result is 20; the second is a vector 24,33,22; the next two are 2×2 matrices. Logical indexing returns 35,33,30,38 in column-major order. traffic[4,2] asks for a nonexistent row; traffic[2,4] gives 26. The final selection is a 2×3 matrix.',
+    manual: selfReview,
+    hints: [
+      'The first index selects rows, and the second selects columns.',
+      'For a single logical matrix index, visit cells down each column in turn.',
+    ],
+  },
+  'ps5-repair': {
+    title: 'PS 5 · Repair a passenger table',
+    kind: 'code',
+    source: 'PS 5 · Q5',
+    prompt:
+      'Explain what counts[2,] <- 41 would change, then work on a copy counts_clean and correct only the erroneous 410 to 41. Replace P4 with c(56,51,50). Add route D=c(40,46,52,54) as a row in counts_extended. Remove P2 by negative indexing into counts_reduced. Preserve route and period names. Before running, write the full expected reduced matrix and dimensions in comments. Display counts_reduced[counts_reduced >= 50] and explain its order. Keep the original counts unchanged.',
+    starter: countsInput + '\n# Work on copies and preserve the original input.',
+    checks: [
+      value('counts', 'matrix(c(42,51,48,55,39,410,44,50,36,45,47,49),3,byrow=TRUE)'),
+      value('counts_clean', 'matrix(c(42,51,48,56,39,41,44,51,36,45,47,50),3,byrow=TRUE)'),
+      value(
+        'counts_extended',
+        'matrix(c(42,51,48,56,39,41,44,51,36,45,47,50,40,46,52,54),4,byrow=TRUE)',
+      ),
+      value('counts_reduced', 'matrix(c(42,48,56,39,44,51,36,47,50,40,52,54),4,byrow=TRUE)'),
+      check(
+        'exists("counts_reduced",inherits=FALSE) && identical(rownames(counts_reduced),c("A","B","C","D")) && identical(colnames(counts_reduced),c("P1","P3","P4"))',
+        'Keep route names A–D and columns P1, P3, P4 in order.',
+      ),
+      displayed('c(52,56,51,50,54)', 'Display the reduced matrix values that are at least 50.'),
+    ],
+    explanation:
+      'counts[2,] <- 41 overwrites all four cells in row 2. Correcting [2,2], updating P4, adding D and excluding P2 gives a 4×3 matrix. Logical selection gives 52,56,51,50,54 because the remaining columns are visited in order.',
+    manual: selfReview,
+    hints: [
+      'A blank second index means every column. A single-cell repair needs both indexes.',
+      'Copy first, update the copy, bind the new row, then exclude the discontinued column.',
+    ],
+  },
+  'ps5-challenge': {
+    title: 'PS 5 · Optional matrix challenge',
+    kind: 'code',
+    source: 'PS 5 · Optional challenge',
+    prompt:
+      'Starting from the original counts each time: display P4 then P1; make counts_with_na with entries greater than 100 replaced by NA; make counts_corrected with only the erroneous 410 changed to 41, and display how many entries are at least 50. Explain your expressions in comments. This challenge does not use the extended matrix from Q5.',
+    starter: countsInput + '\n# Each operation starts from this original table.',
+    checks: [
+      displayed('matrix(c(55,42,50,39,49,36),3,byrow=TRUE)', 'Display columns P4 then P1.'),
+      value('counts_with_na', 'matrix(c(42,51,48,55,39,NA,44,50,36,45,47,49),3,byrow=TRUE)'),
+      value('counts_corrected', 'matrix(c(42,51,48,55,39,41,44,50,36,45,47,49),3,byrow=TRUE)'),
+      displayed('3', 'Display the number of corrected entries at least 50.'),
+    ],
+    explanation:
+      'Column order follows c(4,1). A logical matrix selects the one value above 100. In the original matrix with 410 corrected to 41, only 51,55,50 meet the threshold: the count is 3.',
+    manual: selfReview,
+  },
+  'lab5-combine': {
+    title: 'Lab 5 · Combine branch vectors',
+    kind: 'code',
+    source: 'Lab 5 · Exercise 1',
+    prompt:
+      'Branch A sold 42,35,51,28; B sold 45,31,58,33; C sold 40,39,55,30. Create numeric vectors branch_a, branch_b, branch_c, then concatenate them in that order into all_sales. Display its length and class, or save them as observation_count and sales_class. Confirm the number of observations in a comment.',
+    starter: '# Create the three vectors and combine them.',
+    checks: [
+      value('branch_a', 'c(42,35,51,28)'),
+      value('branch_b', 'c(45,31,58,33)'),
+      value('branch_c', 'c(40,39,55,30)'),
+      value('all_sales', 'c(42,35,51,28,45,31,58,33,40,39,55,30)'),
+      ...answers([
+        namedAnswer('Combined vector', 'c(42,35,51,28,45,31,58,33,40,39,55,30)', 'all_sales'),
+        namedAnswer('Observation count', '12', 'observation_count'),
+        {
+          ...namedAnswer('Vector class', '"numeric"', 'sales_class'),
+          predicate:
+            'exists("all_sales",envir=.lesson,inherits=FALSE) && is.character(.answer) && identical(.answer,class(.lesson$all_sales))',
+        },
+      ]),
+    ],
+    explanation:
+      'Concatenation preserves branch order and gives 12 observations. The instructor uses numeric literals, so class(all_sales) is "numeric". Integer inputs may report "integer"; the reported class must match the vector.',
+    manual: selfReview,
+  },
+  'lab5-identifiers': {
+    title: 'Lab 5 · Generate identifiers',
+    kind: 'code',
+    source: 'Lab 5 · Exercise 2',
+    prompt:
+      'The supplied branch vectors and all_sales are recreated for this task. Create product_ids for 101–104 with seq(); branch_labels with four A values then four B and four C using rep(each=...); product_pattern repeating product_ids three times using rep(times=...). Display the three lengths together in the order branch_labels, product_pattern, all_sales. Explain how the labels align with the sales.',
+    starter:
+      branches +
+      '\nall_sales <- c(branch_a,branch_b,branch_c)\n# Generate identifiers and inspect lengths.',
+    checks: [
+      value('product_ids', '101:104'),
+      value('branch_labels', 'rep(c("A","B","C"),each=4)'),
+      value('product_pattern', 'rep(101:104,3)'),
+      displayed('c(12,12,12)', 'Display the three lengths together in the requested order.'),
+    ],
+    explanation:
+      'Each branch contributes four consecutive sales, so each=4 repeats branch labels. times=3 repeats the complete four-product pattern. All three lengths are 12.',
+    manual: selfReview,
+  },
+  'lab5-correct': {
+    title: 'Lab 5 · Correct, sort and filter',
+    kind: 'code',
+    source: 'Lab 5 · Exercise 3',
+    prompt:
+      'Copy recorded_b to branch_b_corrected and correct its second element from 310 to 31. Create branch_b_desc in descending order; best_product_position with which.max(); target_sales containing values at least 40 using logical indexing; and first_three by excluding position 4 with negative indexing. Keep recorded_b unchanged. Display the five results.',
+    starter: 'recorded_b <- c(45,310,58,33)\n# Correct a copy, then derive the requested results.',
+    checks: [
+      value('recorded_b', 'c(45,310,58,33)'),
+      value('branch_b_corrected', 'c(45,31,58,33)'),
+      value('branch_b_desc', 'c(58,45,33,31)'),
+      value('best_product_position', '3'),
+      value('target_sales', 'c(45,58)'),
+      value('first_three', 'c(45,31,58)'),
+    ],
+    explanation:
+      'The corrected vector is 45,31,58,33. Sorting gives 58,45,33,31, while the largest value is at original position 3. The threshold keeps 45,58; excluding position 4 leaves 45,31,58.',
+    manual: selfReview,
+  },
+  'lab5-build': {
+    title: 'Lab 5 · Build the sales matrix',
+    kind: 'code',
+    source: 'Lab 5 · Exercise 4',
+    prompt:
+      'The three branch vectors are supplied independently of earlier exercises. Stack them as rows using rbind() into sales. Create the same values as sales_from_matrix using matrix(), nrow=3 and byrow=TRUE. Print both matrices, then inspect dim(sales), nrow(sales), ncol(sales). Explain which dimension represents branches. Row names may differ between the two construction methods.',
+    starter: branches + '\n# Construct both matrices and inspect their dimensions.',
+    checks: [
+      value('sales', salesExpected),
+      value('sales_from_matrix', salesExpected),
+      displayed('c(3,4)', 'Display dim(sales).'),
+      displayed('3', 'Display nrow(sales).'),
+      displayed('4', 'Display ncol(sales).'),
+    ],
+    explanation:
+      'Both constructions give 3 branches × 4 products. rbind() stacks each branch vector as a row. matrix() needs byrow=TRUE to preserve that arrangement from the concatenated vector.',
+    manual: selfReview,
+  },
+  'lab5-extract': {
+    title: 'Lab 5 · Extract rows and blocks',
+    kind: 'code',
+    source: 'Lab 5 · Exercise 5',
+    prompt:
+      'From the supplied sales matrix, save branch_b_sales as row 2, product_3_sales as column 3, selected_block as rows 1–2 and columns 2–4, and corner_sales as rows 1 and 3 with columns 1 and 4. Print each result and explain its shape. The input is supplied afresh for this question.',
+    starter: salesInput + '\n# Extract the four requested objects.',
+    checks: [
+      value('branch_b_sales', 'c(45,31,58,33)'),
+      value('product_3_sales', 'c(51,58,55)'),
+      value('selected_block', 'matrix(c(35,51,28,31,58,33),2,byrow=TRUE)'),
+      value('corner_sales', 'matrix(c(42,28,40,30),2,byrow=TRUE)'),
+    ],
+    explanation:
+      'One row or column is simplified to a vector by default. The selected block is 2×3; the corners form a 2×2 matrix in the requested row/column order.',
+    manual: selfReview,
+  },
+  'lab5-logical': {
+    title: 'Lab 5 · Use a logical matrix',
+    kind: 'code',
+    source: 'Lab 5 · Exercise 6',
+    prompt:
+      'Create target_matrix marking sales >= 50. Extract matching values into high_sales. Use sum(target_matrix) to count matches, and display the count or save it as target_count. Explain the structure of the mask and the extraction order.',
+    starter: salesInput + '\n# Build the mask, extract values and count matches.',
+    checks: [
+      value('target_matrix', `(${salesExpected}) >= 50`),
+      value('high_sales', 'c(51,58,55)'),
+      ...answers([namedAnswer('Target count', '3', 'target_count')]),
+    ],
+    explanation:
+      'The 3×4 logical mask has TRUE in product column 3 for all branches. Extraction gives 51,58,55. Summing TRUE values gives 3; logical extraction follows column-major order.',
+    manual: selfReview,
+  },
+  'lab5-update': {
+    title: 'Lab 5 · Update and restructure',
+    kind: 'code',
+    source: 'Lab 5 · Exercise 7',
+    prompt:
+      'Copy the supplied sales to sales_updated. Change Branch B/Product 2 from 31 to 37. Replace product column 4 with c(30,34,32). Add Branch D=c(44,36,52,29) into sales_extended. Remove product column 2 into sales_reduced. Keep sales unchanged and print the three new matrices. Explain the difference between changing one cell and replacing a column.',
+    starter: salesInput + '\n# Copy, update, extend and reduce.',
+    checks: [
+      value('sales', salesExpected),
+      value('sales_updated', 'matrix(c(42,35,51,30,45,37,58,34,40,39,55,32),3,byrow=TRUE)'),
+      value(
+        'sales_extended',
+        'matrix(c(42,35,51,30,45,37,58,34,40,39,55,32,44,36,52,29),4,byrow=TRUE)',
+      ),
+      value('sales_reduced', 'matrix(c(42,51,30,45,58,34,40,55,32,44,52,29),4,byrow=TRUE)'),
+    ],
+    explanation:
+      'The updated matrix is 3×4, adding Branch D gives 4×4, and excluding Product 2 gives 4×3. The original sales stays unchanged because modifications are made on a copy.',
+    manual: selfReview,
+  },
+  'lab5-balloons': {
+    title: 'Lab 5 · Optional balloon spacing',
+    kind: 'code',
+    source: 'Lab 5 · Exercise 8',
+    prompt:
+      'Two endpoint balloons span a string. Insert either two white balloons or four yellow balloons, with equal neighboring gaps in each arrangement. White spacing is 18 cm longer. Create named inserted (white, yellow) and gap_counts; calculate span in one expression from span/white_gaps - span/yellow_gaps = 18. Create spacing, then white_positions and yellow_positions with seq(), including 0 and span. Display the spacing difference. Explain how you counted gaps. This is the source lab’s optional TYT extension.',
+    starter: '# Model the two arrangements with named vectors.',
+    checks: [
+      value('inserted', 'c(2,4)'),
+      check(
+        'exists("inserted",inherits=FALSE) && identical(names(inserted),c("white","yellow"))',
+        'Name the two inserted counts white and yellow in that order.',
+      ),
+      value('gap_counts', 'c(3,5)'),
+      // Division in the instructor formula introduces floating-point error
+      // even though these mathematical results are whole numbers.
+      value('span', '135', undefined, 1e-8),
+      value('spacing', 'c(45,27)', undefined, 1e-8),
+      value('white_positions', 'c(0,45,90,135)', undefined, 1e-8),
+      value('yellow_positions', 'c(0,27,54,81,108,135)', undefined, 1e-8),
+      displayed('18', 'Display the difference between the two spacings.'),
+    ],
+    explanation:
+      'Two inserted balloons make 3 gaps; four make 5. Solving span/3 - span/5 = 18 gives 135 cm, with spacings 45 and 27 cm. Each position sequence includes both endpoints.',
+    manual: selfReview,
+    hints: [
+      'Draw the endpoints and count the spaces, including the two outer gaps.',
+      'Factor span out of the difference of the two reciprocal gap counts.',
+    ],
+  },
+});
+
 const defaultHints = [
   'Work through each requested result in question order.',
   'Open the instructor solution to compare values and structure. Equivalent calculations and helper objects are allowed.',
@@ -488,4 +824,21 @@ export const foundationsPractice = [
   'lab3-grade',
   'lab3-sales',
   'lab3-departments',
+].map(practiceTask);
+
+export const vectorsMatricesPractice = [
+  'ps5-construction',
+  'ps5-indexing',
+  'ps5-filling',
+  'ps5-subsets',
+  'ps5-repair',
+  'ps5-challenge',
+  'lab5-combine',
+  'lab5-identifiers',
+  'lab5-correct',
+  'lab5-build',
+  'lab5-extract',
+  'lab5-logical',
+  'lab5-update',
+  'lab5-balloons',
 ].map(practiceTask);

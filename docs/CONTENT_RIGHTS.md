@@ -12,14 +12,20 @@ and solutions also draw on those materials. Each published task links to its
 source section or PDF page.
 
 The workshop includes the provided instructor HTML answers for
-PS 2, Lab 2, PS 3 and Lab 3. Their original bytes are preserved, and each
-practice task links to its answer section as well as the question. Lecture 3
-is not included. These answer documents retain the same
+PS 2, Lab 2, PS 3, Lab 3, PS 5 and Lab 5. Their original bytes are preserved, and each
+practice task links to its answer section as well as the question. Lectures 3
+and 4 are included unchanged; Lecture 5 is not included. These answer documents retain the same
 author attribution and course-material exclusions described below.
 
 Rights to the original teaching materials remain with their respective authors.
 These materials, including course-derived exercise text, examples, hints, and
 solutions, are excluded from the application software licence.
+
+Lecture 3’s hotel-clock scenario and Lab 5’s optional balloon-spacing exercise
+attribute their adapted problems to ÖSYM’s 2023 TYT Basic Mathematics questions
+9 and 8 respectively. Those attributions and the handouts’ original links are
+retained. The workshop adapts the supplied course versions; it does not claim
+independent verification against the official question booklet.
 
 ## Project licence
 

@@ -170,9 +170,52 @@ try {
   await edit('x=10; y="apple"; z=x+5; print(z)');
   await page.getByRole('button', { name: 'Run', exact: true }).click();
   await wait('Code checks passed.');
+
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.locator('.brand').click();
+  await page.locator('#course-unit').click();
+  await page.getByRole('option', { name: /Weeks 3–5/ }).click();
+  assert.equal(await page.locator('#unit-source').innerText(), 'Lectures 3–4 · PS 5 · Lab 5');
+  for (const [mode, count] of [
+    ['learn', 21],
+    ['practice', 14],
+    ['exam', 8],
+  ])
+    assert(
+      (await page.locator(`[data-open-mode="${mode}"]`).innerText()).includes(`${count} exercises`),
+    );
+  await page.locator('#course-options').waitFor({ state: 'hidden' });
+  await page.screenshot({
+    path: 'tests/artifacts/vectors-matrices-desktop.png',
+    fullPage: true,
+    animations: 'disabled',
+  });
+  await page.locator('[data-open-mode="practice"]').click();
+  assert(new URL(page.url()).hash === '#ps5-construction');
+  await page.goto(origin + '/#ps5-indexing');
+  assert.equal(await page.locator('#solution').count(), 0);
+  await page.getByRole('button', { name: 'Show solution', exact: true }).click();
+  await page.getByRole('button', { name: 'Use in editor' }).click();
+  const indexingSolution = await page.getByRole('textbox', { name: 'R code editor' }).innerText();
+  await page.getByRole('button', { name: 'Run', exact: true }).click();
+  await wait('Code checks passed.');
+  await edit(indexingSolution + '\nwithout_first_max <- delay[delay != max(delay)]');
+  await page.getByRole('button', { name: 'Run', exact: true }).click();
+  await wait('One thing to fix:');
+  for (const id of ['lab5-update', 'lab5-balloons']) {
+    await page.goto(origin + '/#' + id);
+    await page.getByRole('button', { name: 'Show solution', exact: true }).click();
+    await page.getByRole('button', { name: 'Use in editor' }).click();
+    await page.getByRole('button', { name: 'Run', exact: true }).click();
+    await wait('Code checks passed.');
+  }
+  await page.goto(origin + '/#paper-repeat-pattern');
+  await page.getByLabel('N,N,S,S,N,N,S,S', { exact: true }).check();
+  await page.getByRole('button', { name: 'Check answer', exact: true }).click();
+  await wait('Correct.');
   assert.deepEqual(errors, []);
   console.log(
-    'Production passed: real R, positive and negative checking, missing-object errors, warnings, menu-return draft preservation, data-frame visualisation, course map, 320/390/768/1440px layout, paper practice, instructor output bundles, typed partial feedback, intermediate states, expected errors, no development harness or page errors.',
+    'Production passed: real R, positive and negative checking, missing-object errors, warnings, menu-return draft preservation, data-frame visualisation, course map, 320/390/768/1440px layout, paper practice, instructor output bundles, typed partial feedback, intermediate states, expected errors, Weeks 3–5 selection/modes, PS 5 vector outputs and rejection, independent Lab 5 update and floating-point formula, no development harness or page errors.',
   );
 } finally {
   await browser.close();

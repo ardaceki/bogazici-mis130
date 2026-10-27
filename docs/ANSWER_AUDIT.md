@@ -1,16 +1,19 @@
 # Answer contracts and instructor alignment
 
-Reviewed on 13 October 2026.
+Reviewed on 27 October 2026.
 
-The two existing modules still contain 73 tasks (55 code, 12 choice, 6 written).
-All 21 PS/lab questions are aligned with the newly supplied PS 2, Lab 2,
-PS 3 and Lab 3 instructor HTML answers. Lecture 3 is intentionally deferred.
+The three modules contain 116 tasks (90 code, 17 choice, 9 written).
+The first two modules retain their 73 tasks. All 35 PS/lab questions are aligned
+with the supplied PS 2, Lab 2, PS 3, Lab 3, PS 5 and Lab 5 instructor HTML answers.
+Weeks 3–5 pairs Lectures 3–4 with PS 5/Lab 5, whose introductions explicitly
+identify those lectures. Week 4 had Quiz 1 rather than PS/lab. Lecture 5 covers
+lists and data frames and is not included in this topic group.
 The PS 2 instructor document calls its answers suggestions rather than an
 assessment rubric; the workshop does not demand identical code or reasoning.
 
 ## Source and implementation
 
-`public/sources/{ps2,lab2,ps3,lab3}-answers.html` are unchanged copies of the
+`public/sources/{ps2,lab2,ps3,lab3,ps5,lab5}-answers.html` are unchanged copies of the
 provided answer documents. Every practice question links to both its original
 question and instructor section. `src/content/instructor-solutions.js` transcribes
 the executable R chunks, including initialization, without rendered output
@@ -47,6 +50,14 @@ structured answer checks and ordered workspace-state checks.
 - Display rounding is separate from stored precision. Compound interest asks
   for two-decimal outputs; future value and city populations retain full precision.
   Rounded numbers copied from a rendered R output are not the underlying values.
+- Lab 5's balloon-spacing formula involves division and can produce a small
+  floating-point error even when the mathematical answer is a whole number.
+  Its span, spacing and generated positions use an explicit `1e-8` relative
+  tolerance. Discrete vector positions and counts still use zero tolerance.
+- An atomic result bundle represents one scalar per field only when every
+  expected field is scalar. Otherwise a final vector of the same length as the
+  number of fields remains one displayed answer, so PS 5 Q2's seven vector
+  answers can be read correctly in order.
 
 ## Practice contracts
 
@@ -75,6 +86,44 @@ structured answer checks and ordered workspace-state checks.
 | Lab 3 Ex. 5 | Named scores matrix; department/quarter means, best name Sales, real factor with exactly the three departments | Result list, displayed results or saved answers; factor levels may be reordered                                      |
 
 ## Runtime evidence and limits
+
+### Weeks 3–5 practice contracts
+
+All new practice tasks use the existing typed answer observer. PS questions
+retain prediction and explanation prompts, but neither written reasoning nor
+whether the prediction preceded execution is automatically assessed. Requested
+functions/indexing methods are self-reviewed: checks compare results rather
+than demand a literal spelling of the instructor code.
+
+| Question             | Automatic evidence                                                                                      | Student self-review / adaptation                                                                           |
+| -------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| PS 5 Q1              | Three named input vectors, corrected descending sequence, stop order, displayed length                  | Exact predictions, three length inspections, each/times and step-direction explanations                    |
+| PS 5 Q2              | Seven vector results, including only the first maximum removed                                          | Positive/negative index diagnosis and repeated-index explanation                                           |
+| PS 5 Q3              | Both matrices, dimensions/counts, both positions of 18 and equivalent row-bound arrangement             | Full matrix prediction, filling direction and use of rbind; coordinates may be vectors or one-row matrices |
+| PS 5 Q4              | Seven selected values/vectors/matrices with correct order and shape                                     | Structure predictions, column-major order and invalid-row diagnosis                                        |
+| PS 5 Q5              | Original and three derived matrices, final route/period names, displayed filtered values                | Single-cell versus whole-row explanation, negative indexing and predicted dimensions                       |
+| PS 5 optional        | Reordered display, NA replacement copy, corrected original-size matrix, displayed threshold count       | Operations start from original counts, independently of Q5's extended matrix                               |
+| Lab 5 Ex. 1          | Branch vectors, concatenated values, count and matching class report                                    | Integer input is accepted with an accurate integer class report                                            |
+| Lab 5 Ex. 2          | Product IDs, branch labels, product pattern and displayed length vector                                 | seq/rep methods and observation alignment                                                                  |
+| Lab 5 Ex. 3          | Original retained, corrected/sorted/filter/exclusion results and maximum position                       | Requested displays, indexing and sorting methods                                                           |
+| Lab 5 Ex. 4          | Two 3×4 arrangements and displayed dimensions/counts                                                    | Construction methods, printed matrices and dimension interpretation; row-name differences allowed          |
+| Lab 5 Ex. 5          | Two vectors and two correctly shaped matrix selections                                                  | Prints and shape explanation                                                                               |
+| Lab 5 Ex. 6          | Logical mask, selected vector and count                                                                 | Logical summation and extraction order                                                                     |
+| Lab 5 Ex. 7          | Original retained and all three derived matrix values/shapes                                            | Prints and single-cell versus column update explanation                                                    |
+| Lab 5 optional Ex. 8 | Named inserted counts, gap counts, span, spacing, endpoint-inclusive positions and displayed difference | Gap modelling, algebra and seq method                                                                      |
+
+Lab inputs needed from earlier exercises are repeated in each task's starter
+and instructor solution. No earlier question or previous Run is required.
+PS 5's optional challenge and Lab 5's balloon extension are clearly labelled
+optional, with the same free navigation as all other questions.
+
+The Lecture 4 source is unchanged. The adapted overwrite exercise explains its
+contradictory manually typed output: after `B[,3] <- B[3,]`, `B[2,3]` is 900,
+not 105.5. The added `drop=FALSE` lesson is labelled as a workshop bridge.
+Connect 4 tasks use explicit initial states and representations; a check of
+four specified cells is not presented as a complete game or general win detector.
+
+### Shared runtime behavior
 
 Course code is parsed and evaluated by native R in the fresh lesson workspace.
 `src/application/answer-observer.js` records typed values from real print() and
@@ -135,7 +184,7 @@ How to answer. Practice prompts state the task and supplied inputs without
 giving away a diagnosis or calculation method that the question asks students
 to discover. Learn examples still provide their intended teaching instructions.
 
-`tests/answer-disclosure.spec.js` checks the initial state of all 73 questions
+`tests/answer-disclosure.spec.js` checks the initial state of all 116 questions
 and their guided stages, specific premature-answer regressions, and the explicit
 solution/check/edit/navigation lifecycle. The production smoke checks the same
 ticket-output disclosure regression without the development harness.
@@ -146,11 +195,18 @@ ticket-output disclosure regression without the development harness.
 four HTML documents, independently of the task solution strings. It also checks
 19 different correct approaches, incorrect values/types/shapes/precision,
 skipped or reversed transitions, forged evidence, expected-error behavior,
-grouped-statement visibility, fresh runs, all 21 source mappings, partial-result
+grouped-statement visibility, fresh runs, all 35 source mappings, partial-result
 feedback and the 320px layout. The existing all-solution tests still cover
-55 main coding solutions and 24 guided stages. See `VALIDATION.md` for executed
+90 main coding solutions and 24 guided stages. See `VALIDATION.md` for executed
 commands and their results. Physical devices and assistive technology are outside
-this local validation.
+this automated validation.
+
+`tests/vectors-matrices.spec.js` independently reads all 14 new coding answers
+from the PS 5/Lab 5 HTML, including prerequisite initialization. It verifies
+14 alternative calculations/formats and 19 incorrect value/type/shape/order,
+copy-mutation and precision cases. It also covers the third course selector
+entry, all three modes, all new practice source links and a real-R 320px flow.
+The shared all-solution and initial-disclosure tests include the new module.
 
 `tests/audit-regressions.spec.js` reproduces all eight examples in the independent
 audit. It also covers native control flow, aliases/namespaced output, quoted data,

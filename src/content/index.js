@@ -1,15 +1,14 @@
 import { taskSources } from './sources.js';
 import introduction from './introduction.js';
 import foundations from './foundations.js';
-export const modules = [introduction, foundations];
+import vectorsMatrices from './vectors-matrices.js';
+export const modules = [introduction, foundations, vectorsMatrices];
 export const modes = [
   { id: 'learn', label: 'Learn' },
   { id: 'practice', label: 'PS / Lab' },
   { id: 'exam', label: 'Paper practice' },
 ];
 export const upcoming = [
-  ['Vectors in depth', '7 Oct'],
-  ['Matrices in depth', '14 Oct'],
   ['Lists, data frames & control flow', '21 Oct'],
   ['Functions', '28 Oct / 11 Nov'],
   ['Data import & export', '18 Nov'],

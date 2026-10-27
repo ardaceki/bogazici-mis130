@@ -157,14 +157,127 @@ link('paper-class', [foundations.classes], taskSources.unclass.note);
 link('paper-simultaneous', [lab3(1)]);
 link('paper-summary', [lab3(5), ps3.matrix]);
 
+const vectorsLecture = (anchor, section) => html('lecture-3', anchor, `Lecture 3 · ${section}`);
+const matricesLecture = (anchor, section) => html('lecture-4', anchor, `Lecture 4 · ${section}`);
+const vectorsDeep = {
+  combine: vectorsLecture('vectors-in-r', '1.1 · Vectors and combination'),
+  seq: vectorsLecture('sequences-with-seq-in-r', '1.3 · Sequences'),
+  rep: vectorsLecture('repetition-with-rep-in-r', '1.4 · Repetition'),
+  sort: vectorsLecture('sorting-with-sort-in-r', '1.5 · Sorting'),
+  subset: vectorsLecture('subsetting-and-element-extraction-in-r', '1.6 · Subsetting'),
+  negative: vectorsLecture(
+    'removing-elements-with-negative-indexing-in-r',
+    '1.7 · Negative indexing',
+  ),
+  indexes: vectorsLecture('indexing-with-vectors-of-indexes-in-r', '1.8 · Index vectors'),
+  change: vectorsLecture('modifying-elements-in-a-vector-in-r', '1.9 · Modifying elements'),
+  clocks: vectorsLecture(
+    'mini-program-solving-the-hotel-clocks-question-in-r',
+    '1.10 · Hotel clocks',
+  ),
+};
+const matricesDeep = {
+  filling: matricesLecture('filling-direction', '2.2 · Filling direction'),
+  binding: matricesLecture('row-and-column-bindings', '2.3 · Row and column binding'),
+  subset: matricesLecture('selecting-specific-rows-and-columns', '5.3 · Subsetting'),
+  negative: matricesLecture('omitting-and-overwriting', '6 · Negative indexes'),
+  overwrite: matricesLecture('overwriting-matrix-elements', '7.2 · Overwriting'),
+  diagonal: matricesLecture('extracting-main-diagonal-elements', '5.4 · Main diagonal'),
+  offset: matricesLecture('off-main-diagonal-elements', '5.5.5 · Offset diagonals'),
+  cells: matricesLecture('connect-4-matrix-overwriting-exercises', '8 · Connect 4 updates'),
+  lowest: matricesLecture('finding-the-lowest-available-row-in-a-column', '4.1 · Lowest empty row'),
+  character: matricesLecture('making-a-move', '9.1–9.3 · Character boards'),
+};
+for (const [ids, refs] of [
+  ['vector-combine', [vectorsDeep.combine]],
+  ['vector-seq-step vector-seq-length', [vectorsDeep.seq]],
+  ['vector-repeat paper-repeat-pattern', [vectorsDeep.rep]],
+  ['vector-sort', [vectorsDeep.sort]],
+  ['vector-index-order', [vectorsDeep.indexes]],
+  ['vector-negative paper-first-maximum', [vectorsDeep.negative]],
+  ['vector-logical', [vectorsDeep.subset]],
+  ['vector-overwrite', [vectorsDeep.change]],
+  ['vector-clocks paper-vector-plan', [vectorsDeep.clocks]],
+  ['matrix-fill-direction paper-matrix-direction', [matricesDeep.filling]],
+  ['matrix-bind', [matricesDeep.binding]],
+  ['matrix-subset-order', [matricesDeep.subset]],
+  ['matrix-exclude-shape paper-matrix-drop', [matricesDeep.negative]],
+  ['matrix-overwrite-sequence', [matricesDeep.overwrite]],
+  ['matrix-diagonal', [matricesDeep.diagonal]],
+  ['matrix-offset-diagonal', [matricesDeep.offset]],
+  ['connect4-cells', [matricesDeep.cells]],
+  ['connect4-lowest', [matricesDeep.lowest]],
+  ['connect4-character', [matricesDeep.character]],
+  ['paper-index-diagnosis', [vectorsDeep.indexes]],
+])
+  link(ids, refs);
+taskSources['matrix-exclude-shape'].note =
+  'Based on the lecture’s dimension-dropping examples. drop=FALSE is an added bridge for preserving matrix shape.';
+taskSources['matrix-overwrite-sequence'].note =
+  'Based on Lecture 4 §7.2. Its second manually typed Output block incorrectly gives B[2,3] as 105.5. The executable example and verified R result give 900.';
+const ps5Anchors = [
+  'q1.-trace-vector-construction---8-minutes',
+  'q2.-trace-filter-and-diagnose-indexes---10-minutes',
+  'q3.-reason-about-matrix-filling---10-minutes',
+  'q4.-predict-matrix-subsets---10-minutes',
+  'q5.-repair-and-restructure-a-passenger-count-table---12-minutes',
+  'optional-challenge',
+];
+for (const [index, id] of [
+  'ps5-construction',
+  'ps5-indexing',
+  'ps5-filling',
+  'ps5-subsets',
+  'ps5-repair',
+  'ps5-challenge',
+].entries())
+  link(id, [
+    html('ps-5', ps5Anchors[index], `PS 5 · ${index < 5 ? `Q${index + 1}` : 'Optional challenge'}`),
+    ...(index < 2
+      ? [vectorsDeep.seq, vectorsDeep.indexes]
+      : [matricesDeep.filling, matricesDeep.subset, matricesDeep.overwrite]),
+  ]);
+const lab5Anchors = [
+  'exercise-1-create-and-combine-branch-vectors---6-minutes',
+  'exercise-2-generate-product-and-branch-identifiers---6-minutes',
+  'exercise-3-correct-sort-and-filter-a-sales-vector---8-minutes',
+  'exercise-4-build-the-sales-matrix---8-minutes',
+  'exercise-5-extract-rows-columns-and-blocks---8-minutes',
+  'exercise-6-use-a-logical-matrix---6-minutes',
+  'exercise-7-update-and-restructure-the-matrix---8-minutes',
+  'exercise-8-balloon-spacing---10-minute-extension',
+];
+for (const [index, id] of [
+  'lab5-combine',
+  'lab5-identifiers',
+  'lab5-correct',
+  'lab5-build',
+  'lab5-extract',
+  'lab5-logical',
+  'lab5-update',
+  'lab5-balloons',
+].entries())
+  link(id, [
+    html('lab-5', lab5Anchors[index], `Lab 5 · Exercise ${index + 1}`),
+    ...(index < 3 || index === 7
+      ? [vectorsDeep.combine, vectorsDeep.seq, vectorsDeep.rep]
+      : [matricesDeep.binding, matricesDeep.subset, matricesDeep.overwrite]),
+  ]);
+link(
+  'matrix-logical-order paper-matrix-logical',
+  [html('ps-5', ps5Anchors[3], 'PS 5 · Q4'), matricesDeep.offset],
+  'Preparation for PS 5 Q4: logical matrix selection and its column-major order. The lecture introduces logical matrix masks in its diagonal example.',
+);
+link('paper-matrix-repair', [html('ps-5', ps5Anchors[4], 'PS 5 · Q5'), matricesDeep.overwrite]);
+
 // The question and its instructor answer remain separately traceable.
 for (const [id, source] of Object.entries(taskSources)) {
-  if (!/^(ps2-|ps3-|lab2-|lab3-)/.test(id)) continue;
+  if (!/^(ps|lab)\d+-/.test(id)) continue;
   const question = source.references.find((ref) =>
-    /^\/sources\/(ps|lab)-[23]\.html#/.test(ref.href),
+    /^\/sources\/(ps|lab)-\d+\.html#/.test(ref.href),
   );
   if (!question) throw new Error(`Missing course question for ${id}`);
-  const href = question.href.replace(/(ps|lab)-([23])\.html/, '$1$2-answers.html');
+  const href = question.href.replace(/(ps|lab)-(\d+)\.html/, '$1$2-answers.html');
   source.references.unshift({ label: `Instructor answers · ${question.label}`, href });
   source.note =
     'Question and feedback aligned with the provided instructor answers. Equivalent calculations are accepted; written reasoning is self-reviewed. Browser adaptations are explained in the exercise.';

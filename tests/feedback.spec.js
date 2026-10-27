@@ -140,6 +140,9 @@ test('every wrong multiple-choice answer explains the mistake; written answers a
         await page.locator(`input[name=answer][value="${i}"]`).check();
         await page.getByRole('button', { name: 'Check answer', exact: true }).click();
         await expect(page.locator('#feedback')).toContainText('Choose another answer');
+        await expect(page.locator('#feedback')).not.toContainText(
+          'Read the question again and compare your choice with the code.',
+        );
         expect((await page.locator('#feedback p').innerText()).length).toBeGreaterThan(70);
       }
   }

@@ -97,6 +97,20 @@ Reduced-motion behavior lives in `styles/motion.css` and `src/motion.js`.
 6. Update the roadmap only when a topic becomes published. Run the checks and
    review desktop/mobile behavior. See [answer audit](ANSWER_AUDIT.md).
 
+The Weeks 3–5 group is in `vectors-matrices.js`: Lecture 3 vectors lead into
+Lecture 4 matrices, with PS 5/Lab 5 practice imported from `course-practice.js`.
+Their week numbers describe when the source work was supplied, not a match to
+Lecture 5. Later lectures should form their own topic groups once the relevant
+practice materials are available. Each lab question must include its own input
+in `starter` (or a documented `setup`); no task inherits another task’s workspace.
+
+`sameValue` and `value` allow an explicit numeric tolerance for computations
+whose mathematically whole-number answer still contains floating-point error.
+Lab 5’s balloon formula uses `1e-8`; discrete indexing/count answers retain zero
+tolerance. Atomic answer bundles are interpreted as one scalar per field only
+when all expected fields are scalars, so a final vector cannot accidentally
+override an otherwise valid sequence of displayed vector answers.
+
 Written reasoning is self-reviewed. Browser checks accept equivalent calculations
 and valid variations in structure where the prompt permits them. Every Run recreates
 the task workspace and its files, clears global objects, and restores the initial
@@ -107,9 +121,10 @@ console workspace; explicit `source(local=...)` still works.
 
 ## Dependencies and deployment
 
-Keep `package-lock.json` in version control and use `npm ci`. The targeted
-`miniflare` → `sharp` 0.35.5 override addresses GHSA-wq5f-xc86-pv6w in Wrangler's
-tooling. Revisit it with Wrangler updates rather than downgrading Wrangler blindly.
+Keep `package-lock.json` in version control and use `npm ci`. Wrangler is pinned
+to 4.153.0, which brings Undici 7.30.1 and Miniflare's own Sharp 0.35.5 dependency.
+The earlier Sharp override is no longer needed. Run the dependency audit and
+deployment dry-run when updating this toolchain.
 
 The output in `dist/` is static. There is no R server, database, or API key.
 The build regenerates `public/THIRD_PARTY_NOTICES.txt` from installed browser

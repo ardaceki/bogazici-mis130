@@ -296,14 +296,14 @@ test('course feedback identifies partial success and the actual type/value error
   await expect(page.locator('#feedback')).not.toContainText('has not been saved');
 });
 
-test('all 21 questions link their instructor section; feedback and written reviews state the actual check scope', async ({
+test('all 35 questions link their instructor section; feedback and written reviews state the actual check scope', async ({
   page,
 }) => {
   await page.goto('/');
   const ids = await page.evaluate(() =>
     window.workshop.tasks.filter((task) => task.mode === 'practice').map((task) => task.id),
   );
-  expect(ids).toHaveLength(21);
+  expect(ids).toHaveLength(35);
   for (const id of ids) {
     await page.goto('/#' + id);
     await page.getByRole('button', { name: 'Source ↗', exact: true }).click();

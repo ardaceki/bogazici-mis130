@@ -237,4 +237,29 @@ export const choiceMistakes = {
     'unclass(df) returns a changed copy. That returned copy is a list; the original df is still a data frame.',
     null,
   ],
+  'paper-repeat-pattern': [
+    'This repeats the original N,S pattern without applying each=2. First repeat each label twice, then repeat that four-label block.',
+    null,
+    'Four N labels followed by four S labels would use each=4. Here each=2 makes smaller blocks before times=2 repeats them.',
+  ],
+  'paper-first-maximum': [
+    'This removes both occurrences of 12. which.max() returns one position, the first maximum, so only that one position is excluded.',
+    null,
+    'This removes the second occurrence of 12. which.max() returns the first maximum at position 3, not the later one at position 5.',
+  ],
+  'paper-matrix-direction': [
+    '17 would be at [2,3] with byrow=TRUE. The default fills down columns: write each column before selecting row 2, column 3.',
+    null,
+    '20 is the first entry of column 4. With three rows, column 3 holds 17,18,19; select its second entry.',
+  ],
+  'paper-matrix-logical': [
+    'This follows the visual rows. One-index logical matrix selection follows columns from left to right, visiting each from top to bottom.',
+    null,
+    'This sorts the selected values in descending order. Logical indexing preserves column-major traversal; it does not sort the matches.',
+  ],
+  'paper-matrix-drop': [
+    'A 2×1 matrix requires drop=FALSE. With the default simplification, selecting a single column removes matrix dimensions.',
+    null,
+    'Two values do not automatically form a row matrix. This selection simplifies to a vector, which has length but no row/column dimensions.',
+  ],
 };
